@@ -1,11 +1,10 @@
 import React from "react";
 import { ListGroup, Container } from "react-bootstrap";
-
-type Restaurant = {
-  id: number;
-  name: string;
-  shortDescription: string;
-};
+import { Restaurant } from "../types/Restaurant";
+import { getRestaurants } from "../services/api";
+import { useQuery } from "@tanstack/react-query";
+import Error from "./Error";
+import Loading from "./Loading";
 
 type RestaurantListProps = {
   onRestaurantSelect: (id: number) => void;
@@ -14,31 +13,25 @@ type RestaurantListProps = {
 const RestaurantList: React.FC<RestaurantListProps> = ({
   onRestaurantSelect,
 }) => {
-  const restaurants = [
-    {
-      id: 1,
-      name: "Velvet & Vine",
-      shortDescription: "A fine dining experience with a modern twist.",
-      cuisine: "French",
-      rating: 4.7,
-      details: {
-        id: 1,
-        address: "123 Fine St, London",
-        openingHours: {
-          weekday: "12:00 PM - 10:00 PM",
-          weekend: "11:00 AM - 11:00 PM",
-        },
-        reviewScore: 4.7,
-        contactEmail: "info@gourmetkitchen.com",
-      },
-    },
-  ];
+  const {
+    isPending,
+    error,
+    data: restaurants,
+  } = useQuery({
+    queryKey: ["restaurants"],
+    queryFn: getRestaurants,
+  });
+
+  if (isPending) return <Loading />;
+
+  if (error)
+    return <Error errorMessage={"An error has occurred: " + error.message} />;
 
   return (
     <Container>
       <h2>Restaurants</h2>
       <ListGroup>
-        {restaurants.map((restaurant) => (
+        {restaurants.map((restaurant: Restaurant) => (
           <ListGroup.Item
             key={restaurant.id}
             action
