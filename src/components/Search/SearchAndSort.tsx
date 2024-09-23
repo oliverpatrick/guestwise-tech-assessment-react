@@ -45,6 +45,7 @@ const SearchAndSort: React.FC<SearchAndSortProps> = ({
             <Form.Check
               type="checkbox"
               label={sortOption.label}
+              id={`sort-${sortOption.value}`}
               key={sortOption.value}
               checked={selectedSortOptions.includes(sortOption.value)}
               onChange={() => onSortChange(sortOption.value)}

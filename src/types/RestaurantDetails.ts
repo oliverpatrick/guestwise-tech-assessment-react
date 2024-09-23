@@ -1,4 +1,5 @@
 export type RestaurantDetailsData = {
+  id: number;
   address: string;
   openingHours: {
     weekday: string;
