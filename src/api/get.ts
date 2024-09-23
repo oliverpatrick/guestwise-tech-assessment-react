@@ -1,7 +1,4 @@
-const fetchData = async (endpoint: string) => {
-  const response = await fetch(`http://localhost:3001/${endpoint}`);
-  return response.json();
-};
+import { fetchData } from "./fetch";
 
 export const getRestaurants = async () => {
   return fetchData("restaurants");
