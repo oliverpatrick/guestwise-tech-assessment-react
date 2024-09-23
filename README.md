@@ -66,7 +66,7 @@ The application currently displays a static list of restaurants. You need to int
    - Start json-server to serve `mock-server.json`:
 
    ```bash
-   yarn server
+   npm run server
    ```
 
    - The server will be accessible at [http://localhost:3001](http://localhost:3001).
@@ -83,18 +83,18 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
-### `yarn start`
+### `npm start`
 
 Runs the app in development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser. The page will reload if you make edits.\
 You will also see any lint errors in the console.
 
-### `yarn test`
+### `npm run test`
 
 Launches the test runner in interactive watch mode.\
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `yarn server`
+### `npm run server`
 
 Runs json-server in development mode.\
 Open [http://localhost:3001](http://localhost:3001) to view it in the browser.
