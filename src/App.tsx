@@ -1,33 +1,9 @@
-import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-import { Col, Container, Row } from "react-bootstrap";
-import RestaurantList from "./components/RestaurantList";
-import RestaurantDetails from "./components/RestaurantDetails";
-import BookTable from "./components/BookTable";
+import HomePage from "./pages/HomePage";
 
-function App() {
-  const [selectedRestaurantId, setSelectedRestaurantId] = useState<
-    number | null
-  >(null);
-
-  return (
-    <Container>
-      <Row>
-        <Col md={4}>
-          <RestaurantList onRestaurantSelect={setSelectedRestaurantId} />
-        </Col>
-        <Col md={8}>
-          {selectedRestaurantId && (
-            <>
-              <RestaurantDetails restaurantId={selectedRestaurantId} />
-              <BookTable />
-            </>
-          )}
-        </Col>
-      </Row>
-    </Container>
-  );
-}
+const App = () => {
+  return <HomePage />;
+};
 
 export default App;
