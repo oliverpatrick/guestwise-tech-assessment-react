@@ -1,9 +1,12 @@
-export const getRestaurants = async () => {
-  const response = await fetch("http://localhost:3001/restaurants");
+const fetchData = async (endpoint: string) => {
+  const response = await fetch(`http://localhost:3001/${endpoint}`);
   return response.json();
 };
 
+export const getRestaurants = async () => {
+  return fetchData("restaurants");
+};
+
 export const getRestaurantDetails = async (id: number) => {
-  const response = await fetch(`http://localhost:3001/restaurants/${id}`);
-  return response.json();
+  return fetchData(`restaurants/${id}`);
 };
