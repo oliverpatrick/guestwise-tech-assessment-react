@@ -1,6 +1,6 @@
 import React from "react";
 import { ListGroup, Container } from "react-bootstrap";
-import { Restaurant } from "../types/Restaurant";
+import { RestaurantData } from "../types/Restaurant";
 import { getRestaurants } from "../services/api";
 import { useQuery } from "@tanstack/react-query";
 import Error from "./Error";
@@ -10,6 +10,12 @@ type RestaurantListProps = {
   onRestaurantSelect: (id: number) => void;
 };
 
+/**
+ * Restaurant list component
+ *
+ * @param {*} onRestaurantSelect - Id restaurant selection
+ * @returns {*}
+ */
 const RestaurantList: React.FC<RestaurantListProps> = ({
   onRestaurantSelect,
 }) => {
@@ -17,7 +23,7 @@ const RestaurantList: React.FC<RestaurantListProps> = ({
     isPending,
     error,
     data: restaurants,
-  } = useQuery({
+  } = useQuery<RestaurantData[]>({
     queryKey: ["restaurants"],
     queryFn: getRestaurants,
   });
@@ -31,7 +37,7 @@ const RestaurantList: React.FC<RestaurantListProps> = ({
     <Container>
       <h2>Restaurants</h2>
       <ListGroup>
-        {restaurants.map((restaurant: Restaurant) => (
+        {restaurants.map((restaurant: RestaurantData) => (
           <ListGroup.Item
             key={restaurant.id}
             action

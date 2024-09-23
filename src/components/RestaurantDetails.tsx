@@ -1,40 +1,41 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Card, Container } from "react-bootstrap";
 import { getRestaurantDetails } from "../services/api";
 import { useQuery } from "@tanstack/react-query";
 import { RestaurantDetailsData } from "../types/RestaurantDetails";
 import Error from "./Error";
 import Loading from "./Loading";
+import { RestaurantData } from "../types/Restaurant";
 
 type RestaurantDetailsProps = {
   restaurantId: number;
 };
 
+/**
+ * Restaurant details component
+ *
+ * @param {*} restaurantId - Restaurant id
+ * @returns {*}
+ */
 const RestaurantDetails: React.FC<RestaurantDetailsProps> = ({
   restaurantId,
 }) => {
-  const {
-    isPending,
-    error,
-    data: details,
-  } = useQuery<RestaurantDetailsData>({
+  const { isPending, error, data } = useQuery<RestaurantData>({
     queryKey: ["restaurant", restaurantId],
     queryFn: () => getRestaurantDetails(restaurantId),
     enabled: !!restaurantId,
   });
 
   if (isPending) return <Loading />;
-  if (error) return <Error errorMessage={`Error: error.message`} />;
+  if (error) return <Error errorMessage={`Error: ${error.message}`} />;
 
-  // const details = {
-  //   address: "123 Fine St, London",
-  //   openingHours: {
-  //     weekday: "12:00 PM - 10:00 PM",
-  //     weekend: "11:00 AM - 11:00 PM",
-  //   },
-  //   reviewScore: 4.7,
-  //   contactEmail: "info@velvetandvine.co.uk",
-  // };
+  const details: RestaurantDetailsData | undefined = data?.details;
+
+  if (!details) {
+    return <Error errorMessage="No details available for this restaurant." />;
+  }
+  console.log("Restaurant id: ", restaurantId);
+  console.log("Details: ", details);
 
   return (
     <Container>
