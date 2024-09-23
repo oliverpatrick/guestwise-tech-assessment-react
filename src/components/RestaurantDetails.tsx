@@ -1,5 +1,5 @@
-import React from "react";
-import { Card, Container } from "react-bootstrap";
+import React, { useState } from "react";
+import { Button, Card, Container, Modal } from "react-bootstrap";
 import { getRestaurantDetails } from "../services/api";
 import { useQuery } from "@tanstack/react-query";
 import { RestaurantDetailsData } from "../types/RestaurantDetails";
@@ -20,11 +20,14 @@ type RestaurantDetailsProps = {
 const RestaurantDetails: React.FC<RestaurantDetailsProps> = ({
   restaurantId,
 }) => {
+  const [showOpeningHours, setShowOpeningHours] = useState(false);
   const { isPending, error, data } = useQuery<RestaurantData>({
     queryKey: ["restaurant", restaurantId],
     queryFn: () => getRestaurantDetails(restaurantId),
     enabled: !!restaurantId,
   });
+
+  const toggleModal = () => setShowOpeningHours((prev) => !prev);
 
   if (isPending) return <Loading />;
   if (error) return <Error errorMessage={`Error: ${error.message}`} />;
@@ -34,18 +37,43 @@ const RestaurantDetails: React.FC<RestaurantDetailsProps> = ({
   if (!details) {
     return <Error errorMessage="No details available for this restaurant." />;
   }
-  console.log("Restaurant id: ", restaurantId);
-  console.log("Details: ", details);
+
+  const { address, reviewScore, contactEmail, openingHours } = details;
+  const weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri"];
+  const weekends = ["Sat", "Sun"];
 
   return (
     <Container>
       <Card>
         <Card.Body>
           <Card.Title>Restaurant Details</Card.Title>
-          <Card.Text>Address: {details.address}</Card.Text>
-          <Card.Text>Review Score: {details.reviewScore}</Card.Text>
-          <Card.Text>Contact: {details.contactEmail}</Card.Text>
+          <Card.Text>Address: {address}</Card.Text>
+          <Card.Text>Review Score: {reviewScore}</Card.Text>
+          <Card.Text>Contact: {contactEmail}</Card.Text>
+          <Button variant="primary" onClick={toggleModal}>
+            Opening Hours
+          </Button>
         </Card.Body>
+
+        <Modal show={showOpeningHours} onHide={toggleModal}>
+          <Modal.Header closeButton>
+            <Modal.Title>Opening Hours:</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Card.Body>
+              {weekdays.map((day) => (
+                <Card.Text key={day}>
+                  {day}: {openingHours.weekday}
+                </Card.Text>
+              ))}
+              {weekends.map((day) => (
+                <Card.Text key={day}>
+                  {day}: {openingHours.weekend}
+                </Card.Text>
+              ))}
+            </Card.Body>
+          </Modal.Body>
+        </Modal>
       </Card>
     </Container>
   );
