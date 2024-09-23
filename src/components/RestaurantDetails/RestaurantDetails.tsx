@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Button, Card, Container, Modal } from "react-bootstrap";
-import { getRestaurantDetails } from "../services/api";
+import { getRestaurantDetails } from "../../api/get";
 import { useQuery } from "@tanstack/react-query";
-import { RestaurantDetailsData } from "../types/RestaurantDetails";
-import Error from "./Error";
-import Loading from "./Loading";
-import { RestaurantData } from "../types/Restaurant";
+import { RestaurantDetailsData } from "../../types/RestaurantDetails";
+import Error from "../Fallbacks/Error";
+import Loading from "../Fallbacks/Loading";
+import { RestaurantData } from "../../types/Restaurant";
 
 type RestaurantDetailsProps = {
   restaurantId: number;
