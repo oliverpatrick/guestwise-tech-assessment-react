@@ -25,6 +25,11 @@ const RestaurantDetails: React.FC<RestaurantDetailsProps> = ({
     queryKey: ["restaurant", restaurantId],
     queryFn: () => getRestaurantDetails(restaurantId),
     enabled: !!restaurantId,
+    retry: 3,
+    retryDelay: (attempt) => Math.min(1000 * 2 ** attempt, 30000),
+    staleTime: 1000 * 60 * 5, // this was googled solution and will need to be researched before porperly implemented - code will be repeated in all useQuery hooks.
+    // A HOC or custom hook could be created to handle this following more SOLID principles depends on the size of application and the decided architecture.
+    // with more time I would research this: https://www.basedash.com/blog/react-query-timeout
   });
 
   const toggleModal = () => setShowOpeningHours((prev) => !prev);
