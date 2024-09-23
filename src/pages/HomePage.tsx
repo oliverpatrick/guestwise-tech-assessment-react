@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import BookTable from "../components/BookTable";
-import RestaurantDetails from "../components/RestaurantDetails";
-import RestaurantList from "../components/RestaurantList";
+import BookingForm from "../components/BookingForm/BookingForm";
+import RestaurantDetails from "../components/RestaurantDetails/RestaurantDetails";
+import RestaurantList from "../components/RestaurantList/RestaurantList";
 
 const HomePage: React.FC = () => {
   const [selectedRestaurantId, setSelectedRestaurantId] = useState<
@@ -19,7 +19,7 @@ const HomePage: React.FC = () => {
           {selectedRestaurantId && (
             <>
               <RestaurantDetails restaurantId={selectedRestaurantId} />
-              <BookTable />
+              <BookingForm />
             </>
           )}
         </Col>
