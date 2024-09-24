@@ -7,7 +7,7 @@ import ErrorFallback from "../../../components/errors/error";
 import Loading from "../../../components/ui/loading/Loading";
 import Search from "../../../components/ui/search/search";
 import Sort from "../../../components/ui/sort/sort";
-import { useSortAndFilter } from "../../../hooks/useSortAndFilter";
+import { useSortAndFilter } from "../../../hooks/use-sort-and-filter";
 
 type RestaurantListProps = {
   onRestaurantSelect: (id: number) => void;
@@ -70,23 +70,11 @@ const RestaurantList: React.FC<RestaurantListProps> = ({
         <Search searchTerm={searchTerm} onSearchChange={handleSearchChange} />
         <Sort
           sortOptions={sortOptions}
-          selectedSortOptions={sortBy || ""}
+          selectedSortOptions={sortBy!}
           onSortChange={handleSortChange}
         />
       </Row>
       <ListGroup>
-        {/* {filteredAndSortedRestaurants
-          ? filteredAndSortedRestaurants.map((restaurant: RestaurantData) => (
-              <ListGroup.Item
-                key={restaurant.id}
-                action
-                onClick={() => onRestaurantSelect(restaurant.id)}
-              >
-                <h5>{restaurant.name}</h5>
-                <p>{restaurant.shortDescription}</p>
-              </ListGroup.Item>
-            ))
-          : []} */}
         {sortedAndFilteredData.map((restaurant: Restaurant) => (
           <ListGroup.Item
             key={restaurant.id}

@@ -1,6 +1,6 @@
 import React, { memo } from "react";
 import { Form, Col } from "react-bootstrap";
-import { SortOption } from "../../../hooks/useSortAndFilter";
+import { SortOption } from "../../../hooks/use-sort-and-filter";
 
 type SortProps = {
   sortOptions: SortOption[];
@@ -25,9 +25,9 @@ const Sort: React.FC<SortProps> = ({
     <Col md={6}>
       <Form.Select
         onChange={(e) => onSortChange(e.target.value)}
-        value={selectedSortOptions[0] || ""}
+        value={selectedSortOptions}
       >
-        <option>Sort By</option>
+        <option>No Filter</option>
         {sortOptions.map((sortOption) => (
           <option
             key={sortOption.value as string}

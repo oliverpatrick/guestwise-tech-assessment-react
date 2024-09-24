@@ -42,6 +42,7 @@ export function useSortAndFilter<T>({
   }, [data, sortBy, searchTerm, filterFn]);
 
   const handleSortChange = useCallback((newSortBy: string) => {
+    console.log(newSortBy);
     setSortBy(newSortBy);
   }, []);
 
