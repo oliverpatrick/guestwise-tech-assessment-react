@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useMemo } from "react";
 import { ListGroup, Container, Row } from "react-bootstrap";
 
 import { useRestaurants } from "../api/get-restaurants";
@@ -7,6 +7,7 @@ import ErrorFallback from "../../../components/errors/error";
 import Loading from "../../../components/ui/loading/Loading";
 import Search from "../../../components/ui/search/search";
 import Sort from "../../../components/ui/sort/sort";
+import { useSortAndFilter } from "../../../hooks/useSortAndFilter";
 
 type RestaurantListProps = {
   onRestaurantSelect: (id: number) => void;
@@ -24,6 +25,36 @@ const RestaurantList: React.FC<RestaurantListProps> = ({
   const restaurantQuery = useRestaurants({});
   const restaurants = restaurantQuery.data;
 
+  const sortOptions = useMemo(
+    () => [
+      { label: "Alphabetical", value: "alphabetical" as const },
+      { label: "Rating", value: "rating" as const },
+    ],
+    []
+  );
+
+  const filterFn = useCallback((restaurant: Restaurant, searchTerm: string) => {
+    return (
+      restaurant.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      restaurant.shortDescription
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase())
+    );
+  }, []);
+
+  const {
+    sortedAndFilteredData,
+    sortBy,
+    searchTerm,
+    handleSortChange,
+    handleSearchChange,
+  } = useSortAndFilter({
+    data: restaurants || [],
+    sortOptions,
+    initialSortBy: "name",
+    filterFn,
+  });
+
   if (restaurantQuery.isLoading) {
     return <Loading />;
   }
@@ -36,8 +67,12 @@ const RestaurantList: React.FC<RestaurantListProps> = ({
     <Container>
       <h2>Restaurants</h2>
       <Row className="mb-4">
-        <Search searchTerm={""} onSearchChange={() => null} />
-        <Sort selectedSortOptions={[]} onSortChange={() => null} />
+        <Search searchTerm={searchTerm} onSearchChange={handleSearchChange} />
+        <Sort
+          sortOptions={sortOptions}
+          selectedSortOptions={sortBy || ""}
+          onSortChange={handleSortChange}
+        />
       </Row>
       <ListGroup>
         {/* {filteredAndSortedRestaurants
@@ -52,7 +87,7 @@ const RestaurantList: React.FC<RestaurantListProps> = ({
               </ListGroup.Item>
             ))
           : []} */}
-        {restaurants.map((restaurant: Restaurant) => (
+        {sortedAndFilteredData.map((restaurant: Restaurant) => (
           <ListGroup.Item
             key={restaurant.id}
             action

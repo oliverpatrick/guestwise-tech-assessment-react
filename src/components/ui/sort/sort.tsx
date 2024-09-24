@@ -1,8 +1,10 @@
-import React from "react";
-import { Form, Col, FormGroup } from "react-bootstrap";
+import React, { memo } from "react";
+import { Form, Col } from "react-bootstrap";
+import { SortOption } from "../../../hooks/useSortAndFilter";
 
 type SortProps = {
-  selectedSortOptions: string[];
+  sortOptions: SortOption[];
+  selectedSortOptions: string;
   onSortChange: (option: string) => void;
 };
 
@@ -14,25 +16,23 @@ type SortProps = {
  * @param {*} onSortChange
  * @returns {*}
  */
-const SearchAndSort: React.FC<SortProps> = ({
+const Sort: React.FC<SortProps> = ({
+  sortOptions,
   selectedSortOptions,
   onSortChange,
 }) => {
-  const sortOptions = [
-    { label: "Alphabetical", value: "alphabetical" },
-    { label: "Rating", value: "rating" },
-  ];
-
   return (
     <Col md={6}>
       <Form.Select
         onChange={(e) => onSortChange(e.target.value)}
         value={selectedSortOptions[0] || ""}
-        defaultValue={""}
       >
         <option>Sort By</option>
         {sortOptions.map((sortOption) => (
-          <option key={sortOption.value} value={sortOption.value}>
+          <option
+            key={sortOption.value as string}
+            value={sortOption.value as string}
+          >
             {sortOption.label}
           </option>
         ))}
@@ -41,4 +41,4 @@ const SearchAndSort: React.FC<SortProps> = ({
   );
 };
 
-export default SearchAndSort;
+export default memo(Sort);

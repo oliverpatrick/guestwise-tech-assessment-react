@@ -51,6 +51,7 @@
   },
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "^5.57.1",
-    "json-server": "^1.0.0-beta.2"
+    "json-server": "^1.0.0-beta.2",
+    "msw": "^2.4.9"
   }
 }
