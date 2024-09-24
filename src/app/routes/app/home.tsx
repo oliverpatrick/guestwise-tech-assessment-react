@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import BookingForm from "../components/BookingForm/BookingForm";
-import RestaurantDetails from "../components/RestaurantDetails/RestaurantDetails";
-import RestaurantList from "../components/RestaurantList/RestaurantList";
+import RestaurantList from "../../../features/restaurants/components/restaurant-list";
+import RestaurantDetails from "../../../features/restaurants/components/restaurant-details";
+import BookingForm from "../../../features/booking-form/booking-form";
 
-const HomePage: React.FC = () => {
+const HomeRoute: React.FC = () => {
   const [selectedRestaurantId, setSelectedRestaurantId] = useState<
     number | null
   >(null);
@@ -30,4 +30,4 @@ const HomePage: React.FC = () => {
   );
 };
 
-export default HomePage;
+export default HomeRoute;

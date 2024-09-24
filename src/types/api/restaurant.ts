@@ -1,4 +1,4 @@
-export type RestaurantData = {
+export type Restaurant = {
   id: number;
   name: string;
   shortDescription: string;
@@ -14,4 +14,15 @@ export type RestaurantData = {
     reviewScore: number;
     contactEmail: string;
   };
+};
+
+export type RestaurantDetails = {
+  id: number;
+  address: string;
+  openingHours: {
+    weekday: string;
+    weekend: string;
+  };
+  reviewScore: number;
+  contactEmail: string;
 };

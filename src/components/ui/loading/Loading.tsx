@@ -29,6 +29,7 @@ const Loading: React.FC<LoadingProps> = ({ spinner, shadow }: LoadingProps) => {
         <Spinner animation="border" role="status">
           <span className="visually-hidden">Loading...</span>
         </Spinner>
+        <h2>Loading...</h2>
       </Container>
     );
   }

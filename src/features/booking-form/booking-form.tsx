@@ -2,9 +2,13 @@ import React, { useState } from "react";
 import { Alert, Button, Col, Container, Form, Row } from "react-bootstrap";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
-import { BookingFormData, bookingSchema } from "../../types/BookingForm";
-import { postBookings } from "../../api/post";
+import { Booking } from "../../types/booking";
+
+import {
+  BookingFormInput,
+  bookingSchema,
+  useCreateBooking,
+} from "./api/create-booking";
 
 /**
  * Booking form component
@@ -22,16 +26,12 @@ const BookingForm: React.FC = () => {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<BookingFormData>({
+  } = useForm<Booking>({
     resolver: zodResolver(bookingSchema),
   });
 
-  const bookingMutation = useMutation({
-    mutationFn: postBookings,
-  });
-
-  const onSubmit = (data: BookingFormData) => {
-    bookingMutation.mutate(data, {
+  const bookingMutation = useCreateBooking({
+    mutationConfig: {
       onSuccess: () => {
         setAlertInfo({
           type: "success",
@@ -47,7 +47,11 @@ const BookingForm: React.FC = () => {
           }`,
         });
       },
-    });
+    },
+  });
+
+  const onSubmit = (bookingData: BookingFormInput) => {
+    bookingMutation.mutate({ bookingData });
   };
 
   return (

@@ -1,5 +1,5 @@
 import React from "react";
-import { Container } from "react-bootstrap";
+import { Button, Col, Container } from "react-bootstrap";
 
 type ErrorProps = {
   errorMessage: string;
@@ -13,7 +13,14 @@ type ErrorProps = {
  * @returns {*}
  */
 const ErrorFallback: React.FC<ErrorProps> = ({ errorMessage }: ErrorProps) => {
-  return <Container>{errorMessage}</Container>;
+  return (
+    <Container>
+      <Col>{errorMessage}</Col>
+      <Button className="mt-4" onClick={() => window.location.reload()}>
+        Refresh
+      </Button>
+    </Container>
+  );
 };
 
 export default ErrorFallback;

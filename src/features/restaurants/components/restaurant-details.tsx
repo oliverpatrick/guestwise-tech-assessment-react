@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 import { Button, Card, Container, Modal } from "react-bootstrap";
-import { getRestaurantDetails } from "../../api/get";
-import { useQuery } from "@tanstack/react-query";
-import { RestaurantDetailsData } from "../../types/RestaurantDetails";
-import ErrorFallback from "../Fallbacks/Error";
-import Loading from "../Fallbacks/Loading";
-import { RestaurantData } from "../../types/Restaurant";
+import { useRestaurantDetails } from "../api/get-restaurant-details";
+import ErrorFallback from "../../../components/errors/error";
+import Loading from "../../../components/ui/loading/Loading";
+import { RestaurantDetails as RestaurantDetailsData } from "../../../types/api/restaurant";
 
 type RestaurantDetailsProps = {
   restaurantId: number;
@@ -20,24 +18,21 @@ type RestaurantDetailsProps = {
 const RestaurantDetails: React.FC<RestaurantDetailsProps> = ({
   restaurantId,
 }) => {
-  console.log("restaurantId rdetails", restaurantId);
-  const [showOpeningHours, setShowOpeningHours] = useState(false);
-  const { isPending, error, data } = useQuery<RestaurantData>({
-    queryKey: ["restaurant", restaurantId],
-    queryFn: () => getRestaurantDetails(restaurantId),
-    retry: 3,
-    retryDelay: (attempt) => Math.min(1000 * 2 ** attempt, 30000),
-    staleTime: 1000 * 60 * 5, // this was googled solution and will need to be researched before porperly implemented - code will be repeated in all useQuery hooks.
-    // A HOC or custom hook could be created to handle this following more SOLID principles depends on the size of application and the decided architecture.
-    // with more time I would research this: https://www.basedash.com/blog/react-query-timeout
+  const restaurantDetailsQuery = useRestaurantDetails({
+    restaurantId: restaurantId.toString(),
   });
 
+  const [showOpeningHours, setShowOpeningHours] = useState(false);
   const toggleModal = () => setShowOpeningHours((prev) => !prev);
 
-  if (isPending) return <Loading />;
-  if (error) return <ErrorFallback errorMessage={`Error: ${error.message}`} />;
+  if (restaurantDetailsQuery.isLoading) return <Loading />;
+  if (restaurantDetailsQuery.isError)
+    return (
+      <ErrorFallback errorMessage={`Error: ${restaurantDetailsQuery.error}`} />
+    );
 
-  const details: RestaurantDetailsData | undefined = data?.details;
+  const details: RestaurantDetailsData | undefined =
+    restaurantDetailsQuery.data?.details;
 
   if (!details) {
     return (
