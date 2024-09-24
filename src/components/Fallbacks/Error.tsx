@@ -12,8 +12,8 @@ type ErrorProps = {
  * @param {string} errorMessage - Error message string
  * @returns {*}
  */
-const Error: React.FC<ErrorProps> = ({ errorMessage }: ErrorProps) => {
+const ErrorFallback: React.FC<ErrorProps> = ({ errorMessage }: ErrorProps) => {
   return <Container>{errorMessage}</Container>;
 };
 
-export default Error;
+export default ErrorFallback;

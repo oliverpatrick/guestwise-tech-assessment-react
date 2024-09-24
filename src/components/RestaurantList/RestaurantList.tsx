@@ -3,7 +3,7 @@ import { ListGroup, Container } from "react-bootstrap";
 import { RestaurantData } from "../../types/Restaurant";
 import { getRestaurants } from "../../api/get";
 import { useQuery } from "@tanstack/react-query";
-import Error from "../Fallbacks/Error";
+import ErrorFallback from "../Fallbacks/Error";
 import Loading from "../Fallbacks/Loading";
 import SearchAndSort from "../Search/SearchAndSort";
 
@@ -66,7 +66,9 @@ const RestaurantList: React.FC<RestaurantListProps> = ({
   if (isPending) return <Loading />;
 
   if (error)
-    return <Error errorMessage={"An error has occurred: " + error.message} />;
+    return (
+      <ErrorFallback errorMessage={`An error has occurred: ${error.message}`} />
+    );
 
   return (
     <Container>

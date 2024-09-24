@@ -9,6 +9,8 @@ const HomePage: React.FC = () => {
     number | null
   >(null);
 
+  console.log("selectedRestaurantId", selectedRestaurantId);
+
   return (
     <Container>
       <Row>

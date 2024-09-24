@@ -5,5 +5,6 @@ export const getRestaurants = async () => {
 };
 
 export const getRestaurantDetails = async (id: number) => {
+  console.log("id", id);
   return fetchData(`restaurants/${id}`);
 };

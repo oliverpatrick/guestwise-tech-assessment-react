@@ -3,7 +3,7 @@ import { Button, Card, Container, Modal } from "react-bootstrap";
 import { getRestaurantDetails } from "../../api/get";
 import { useQuery } from "@tanstack/react-query";
 import { RestaurantDetailsData } from "../../types/RestaurantDetails";
-import Error from "../Fallbacks/Error";
+import ErrorFallback from "../Fallbacks/Error";
 import Loading from "../Fallbacks/Loading";
 import { RestaurantData } from "../../types/Restaurant";
 
@@ -20,11 +20,11 @@ type RestaurantDetailsProps = {
 const RestaurantDetails: React.FC<RestaurantDetailsProps> = ({
   restaurantId,
 }) => {
+  console.log("restaurantId rdetails", restaurantId);
   const [showOpeningHours, setShowOpeningHours] = useState(false);
   const { isPending, error, data } = useQuery<RestaurantData>({
     queryKey: ["restaurant", restaurantId],
     queryFn: () => getRestaurantDetails(restaurantId),
-    enabled: !!restaurantId,
     retry: 3,
     retryDelay: (attempt) => Math.min(1000 * 2 ** attempt, 30000),
     staleTime: 1000 * 60 * 5, // this was googled solution and will need to be researched before porperly implemented - code will be repeated in all useQuery hooks.
@@ -35,12 +35,14 @@ const RestaurantDetails: React.FC<RestaurantDetailsProps> = ({
   const toggleModal = () => setShowOpeningHours((prev) => !prev);
 
   if (isPending) return <Loading />;
-  if (error) return <Error errorMessage={`Error: ${error.message}`} />;
+  if (error) return <ErrorFallback errorMessage={`Error: ${error.message}`} />;
 
   const details: RestaurantDetailsData | undefined = data?.details;
 
   if (!details) {
-    return <Error errorMessage="No details available for this restaurant." />;
+    return (
+      <ErrorFallback errorMessage="No details available for this restaurant." />
+    );
   }
 
   const { address, reviewScore, contactEmail, openingHours } = details;
